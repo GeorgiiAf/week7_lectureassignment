@@ -1,3 +1,6 @@
+// i made additional class for temperature conversion
+
+
 public class Converter {
 
     // Fahrenheit → Celsius
