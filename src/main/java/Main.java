@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private TextField celsiusField = new TextField();
+    private TextField temperatureField = new TextField();
     private Label resultLabel = new Label();
     private double fahrenheit;
 
@@ -16,35 +16,34 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        celsiusField.setPromptText("Enter value");
+        temperatureField.setPromptText("Enter temperature value");
+        Button cToFButton = new Button("Celsius → Fahrenheit");
+        cToFButton.setOnAction(e -> convertCelsiusToFahrenheit());
 
-        Button convertButton = new Button("C → F");
-        convertButton.setOnAction(e -> convertTemperature());
-
-        Button fToCButton = new Button("F → C");
+        Button fToCButton = new Button("Fahrenheit → Celsius");
         fToCButton.setOnAction(e -> convertFahrenheitToCelsius());
 
-        Button kToCButton = new Button("K → C");
+        Button kToCButton = new Button("Kelvin → Celsius");
         kToCButton.setOnAction(e -> convertKelvinToCelsius());
 
-        Button cToKButton = new Button("C → K");
+        Button cToKButton = new Button("Celsius → Kelvin");
         cToKButton.setOnAction(e -> convertCelsiusToKelvin());
 
-        Button saveButton = new Button("Save to DB");
+        Button saveButton = new Button("Save to Database");
         saveButton.setOnAction(e -> Database.saveTemperature(
-                Double.parseDouble(celsiusField.getText()), fahrenheit, resultLabel));
+                Double.parseDouble(temperatureField.getText()), fahrenheit, resultLabel));
 
-        VBox root = new VBox(10, celsiusField, convertButton, fToCButton, kToCButton, cToKButton, resultLabel, saveButton);
-        Scene scene = new Scene(root, 300, 300);
+        VBox root = new VBox(10, temperatureField, cToFButton, fToCButton, kToCButton, cToKButton, resultLabel, saveButton);
+        Scene scene = new Scene(root, 350, 300);
 
         stage.setTitle("Temperature Converter");
         stage.setScene(scene);
         stage.show();
     }
 
-    private void convertTemperature() {
+    private void convertCelsiusToFahrenheit() {
         try {
-            double celsius = Double.parseDouble(celsiusField.getText());
+            double celsius = Double.parseDouble(temperatureField.getText());
             fahrenheit = (celsius * 9 / 5) + 32;
             resultLabel.setText(String.format("Fahrenheit: %.2f", fahrenheit));
         } catch (NumberFormatException ex) {
@@ -54,9 +53,9 @@ public class Main extends Application {
 
     private void convertFahrenheitToCelsius() {
         try {
-            double f = Double.parseDouble(celsiusField.getText());
-            double c = Converter.fahrenheitToCelsius(f);
-            resultLabel.setText(String.format("Celsius: %.2f", c));
+            double fahrenheitValue = Double.parseDouble(temperatureField.getText());
+            double celsius = Converter.fahrenheitToCelsius(fahrenheitValue);
+            resultLabel.setText(String.format("Celsius: %.2f", celsius));
         } catch (NumberFormatException ex) {
             resultLabel.setText("Invalid input!");
         }
@@ -64,9 +63,9 @@ public class Main extends Application {
 
     private void convertKelvinToCelsius() {
         try {
-            double k = Double.parseDouble(celsiusField.getText());
-            double c = Converter.kelvinToCelsius(k);
-            resultLabel.setText(String.format("Celsius: %.2f", c));
+            double kelvin = Double.parseDouble(temperatureField.getText());
+            double celsius = Converter.kelvinToCelsius(kelvin);
+            resultLabel.setText(String.format("Celsius: %.2f", celsius));
         } catch (NumberFormatException ex) {
             resultLabel.setText("Invalid input!");
         }
@@ -74,9 +73,9 @@ public class Main extends Application {
 
     private void convertCelsiusToKelvin() {
         try {
-            double c = Double.parseDouble(celsiusField.getText());
-            double k = Converter.celsiusToKelvin(c);
-            resultLabel.setText(String.format("Kelvin: %.2f", k));
+            double celsius = Double.parseDouble(temperatureField.getText());
+            double kelvin = Converter.celsiusToKelvin(celsius);
+            resultLabel.setText(String.format("Kelvin: %.2f", kelvin));
         } catch (NumberFormatException ex) {
             resultLabel.setText("Invalid input!");
         }
